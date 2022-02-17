@@ -138,5 +138,5 @@ server/djangoapp/templates/djangoapp/__pycache__/
 server/djangoapp/migrations/
 .DS_Store
 *.pyc
-server/djangoapp/migrations/
+#kemiserver/djangoapp/migrations/
 

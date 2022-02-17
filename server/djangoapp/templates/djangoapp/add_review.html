@@ -1,16 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    {% load static %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+  <meta charset="UTF-8">
+  {% load static %}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css"
+    rel="stylesheet">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 
 </head>
-    <body>
-    <!--Add review form here -->
-    </body>
+
+<body>
+
+  <script type="text/javascript">
+    $('.date-own').datepicker({
+      format: 'mm/dd/yyyy'
+    });
+  </script>
+
+  <!--Add a nav bar here -->
+  {% include 'djangoapp/navbar.html' %}
+
+  <!--Add review form here -->
+  <form action="{% url 'djangoapp:add_review' dealer_id%}" method="post">
+    {% csrf_token %}
+    <div class="container">
+      <!--Style root div with .container class -->
+      <h1>Add a review about <b>{{ dealer_name }} </b></h1>
+      <div class="form-group">
+        <!--Style second div with .form-group class -->
+
+        <label for="review"><b>Enter the review content:</b></label>
+        <textarea class="form-control" id="review" name="review" rows="2" placeholder="Enter review: "
+          required></textarea>
+        <br>
+        <input class="form-check-input" type="checkbox" name="purchasecheck" id="purchasecheck"> Has purchased the car
+        from {{ dealer_name }} ? (select purchased car information below if checked)
+
+        <br><br>
+        <label for="car_make"><b>Select your car (model-make-year)</b></label>
+        <select name="car" id="car" class="form-select" required>
+          {% for car in cars %}
+          <option selected value={{car.id}}>{{car.name}}-{{car.carmake.name}}-{{ car.year|date:"Y" }}</option>
+          {% endfor %}
+        </select>
+        <br>
+
+        <label for="car_year"><b>Select Your Purchase Date:</b></label>
+        <input class="date-own form-control" type="date" name="purchasedate" id="purchasedate">
+
+      </div>
+      {% if message %}
+      <div class="alert alert-warning">
+        <!--Style the message paragraph with .alert and .alert-warning class -->
+        {{ message }}
+      </div>
+      {% endif %}
+      <br>
+      <button class="btn btn-primary" type="submit">Submit review</button>
+      <!--Style button with .btn and .btn-primary class -->
+    </div>
+  </form>
+  <br>
+
+
+</body>
+
 </html>
